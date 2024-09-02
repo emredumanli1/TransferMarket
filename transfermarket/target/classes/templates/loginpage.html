@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Login Page</title>
+
+    <style>
+		.failed {
+			color: red;
+		}
+	</style>
+
+</head>
+
+<body>
+
+<h3>Welcome to Transfer Market!</h3>
+<h2>Sign in with your manager/user account to access the features</h2>
+<div class = "box">
+<form action="#" th:action="@{/authenticate}"
+           method="POST">
+
+    <div th:if="${param.error}">
+
+        <i class="failed">Sorry! You entered invalid username/password.</i>
+
+    </div>
+
+    <p>
+        User name: <input type="text" name="username" />
+    </p>
+
+    <p>
+        Password: <input type="password" name="password" />
+    </p>
+
+    <input type="submit" value="Login" />
+
+</form>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+				xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+	<title>Transfer Market</title>
+</head>
+
+<body>
+
+	<div class="d-flex">
+		
+		<div class="p-3 bg-light" style="min-width: 200px;" th:if="${tempTeam.teamName != 'NOTEAM'}">
+			<p>
+				Team Page: <span th:text="${tempTeam.teamName}"></span>
+				<br><br>
+                Market Value: <span th:text="${marketvalue}"></span>
+                <br><br>
+                Coach: <span th:text="${coach.username}"></span>
+                <br><br>
+				
+			</p>
+	</div>
+	
+
+<div class="container">
+
+	<h3>List of Players</h3>
+	<hr>
+
+    <br><br>
+
+    <div th:if="${resultMessage}" class="alert alert-info" role="alert" th:text="${resultMessage}"></div>
+
+    <br><br>
+
+	<form action="#" th:action="@{/}"
+      method="GET">
+
+    <input type="submit" value="Back" class="btn btn-outline-primary mt-2" />
+
+	</form>
+
+    <br><br>
+
+	<table class="table table-bordered table-striped">
+		<thead class="table-dark">
+			<tr>
+				<th>Name</th>
+				<th>Surname</th>
+				<th>Market Value</th>
+				<th>Kit number</th>
+                <th>Status</th>
+                <th>Action</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each="tempPlayer : ${players}">
+			
+				<td th:text="${tempPlayer.name}" ></td>	
+				<td th:text="${tempPlayer.surname}" ></td>	
+				<td th:text="${tempPlayer.marketValue} + 'M €'" ></td>
+                <td th:text="${tempPlayer.kitNumber}" ></td>
+
+                <td>
+                    <span th:if="${tempPlayer.free == 1}" class="badge bg-success">Free</span>
+                    <span th:if="${tempPlayer.free == 0}" class="badge bg-danger">Not Free</span>
+                </td>
+
+
+				<td>
+
+				
+					<div class="row">
+
+						<div class="col-small">
+							
+							<form action="#" th:action="@{/transferPlayer}" method="POST">
+
+								<input type="hidden" name="playerId" th:value="${tempPlayer.id}" />
+								<button type="submit" class="btn btn-info btn-sm me-1" style="float:left;"
+                                onclick="if (!(confirm('Are you sure you want to transfer this player?'))) return false">
+                                Transfer
+                            </button>
+
+							</form>
+
+                            <div th:if="${ownteam}">
+                                <form action="#" th:action="@{/terminatePlayer}" method="POST">
+
+								    <input type="hidden" name="playerId" th:value="${tempPlayer.id}" />
+								    <button type="submit" class="btn btn-danger btn-sm me-1" style="float:left;" 
+                                    onclick="if (!(confirm('Are you sure you want to terminate the contract?'))) return false">
+                                    Terminate Contract
+                                    </button>
+
+							    </form>
+                            </div>
+
+                            <div th:if="${ownteam}">
+                                <form action="#" th:action="@{/releasePlayer}" method="POST">
+                                    <input type="hidden" name="playerId" th:value="${tempPlayer.id}" />
+                                    <button type="submit" class="btn btn-warning btn-sm me-1" style="float:left;"
+                                            onclick="if (!(confirm('Are you sure you want to release this player?'))) return false">
+                                        Toggle release
+                                    </button>
+                                </form>
+                            </div>
+							<br><br>
+							<div th:if="${ownteam}">
+                                <form action="#" th:action="@{/updateKit}" method="POST">
+									<input type="hidden" name="playerId" th:value="${tempPlayer.id}" />
+									<input type="text" name="newKitNumber" placeholder="New Kit Number" class="form-control form-control-sm me-1" style="width:130px; display: inline-block;" required />
+									<button type="submit" class="btn btn-warning btn-sm me-1" style="float:left;">
+										Update Kit Number
+									</button>
+								</form>
+                            </div>
+
+
+						</div>
+
+					</div>
+				</td>
+
+			</tr>
+		</tbody>		
+	</table>
+	
+
+</div>
+
+	
+</body>
+</html>
+
+

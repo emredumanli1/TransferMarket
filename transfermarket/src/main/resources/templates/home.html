@@ -1,0 +1,164 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+				xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+	<title>Transfer Market</title>
+	<style>
+        .btn-group-horizontal {
+            display: flex;
+            gap: 10px; 
+            margin-top: 10px; 
+        }
+    </style>
+</head>
+
+<body>
+
+	<div class="d-flex">
+		
+		<div class="p-3 bg-light" style="min-width: 200px;">
+			<p>
+				Welcome, <span sec:authentication="principal.username">!</span>
+				<br><br>
+				
+				<span th:text="${teamn != null && !teamn.isEmpty() ? 'Team: ' + teamn : 'No team assigned'}">
+
+			</p>
+	</div>
+	
+
+<div class="container">
+
+	<h3>List of All Teams</h3>
+	<hr>
+	<br><br>
+	<div th:if="${resultMessage}" class="alert alert-info" role="alert" th:text="${resultMessage}"></div>
+	<br><br>
+	<form action="#" th:action="@{/logout}"
+      method="POST">
+
+    <input type="submit" value="Logout" class="btn btn-outline-primary mt-2" />
+
+	</form>
+
+	<br><br>
+
+	<a th:href="@{/showFormForAdd}"
+		class="btn btn-primary btn-sm mb-3">
+		Add Player
+	</a>
+
+
+	<table class="table table-bordered table-striped">
+		<thead class="table-dark">
+			<tr>
+				<th>Team</th>
+				<th>National League</th>
+				<th>Other Leagues</th>
+				<th>View Players</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each="tempTeam : ${teams}">
+			
+				<td>
+					<span th:text="${tempTeam.teamName}"></span>
+					<div th:if="${teamn == tempTeam.teamName}" class="btn btn-success btn-sm" style="display:inline-block; margin-left: 10px;">
+						Your Team
+					</div>
+				</td>	
+				<td th:text="${tempTeam.nation}" ></td>	
+				<td th:text="${tempTeam.leagues}" ></td>
+				<td>
+
+				
+					<div class="row">
+
+						<div class="col-small">
+							
+							<form action="#" th:action="@{/viewTeam}" method="POST">
+
+								<input type="hidden" name="teamId" th:value="${tempTeam.id}" />
+								<button type="submit" class="btn btn-info btn-sm me-1" style="float:left;">View</button>
+
+							</form>
+
+						</div>
+
+					</div>
+				</td>
+
+			</tr>
+		</tbody>		
+	</table>
+
+	<br><br>
+	<form action="#" th:action="@{/viewTeam}" method="POST">
+
+		<input type="hidden" name="teamId" th:value="13" />
+		<button type="submit" class="btn btn-info btn-sm me-1" style="float:left;">View Free Players</button>
+
+	</form>
+	<br><br>
+
+	<div class="btn-group-horizontal">
+		<form action="#" th:action="@{/generateLeague}" method="POST" class="me-2">
+			<input type="hidden" name="generateValue" value="1" />
+			<button type="submit" class="btn btn-success btn-sm">Generate random CL group</button>
+		</form>
+		<form action="#" th:action="@{/generateLeague}" method="POST" class="me-2">
+			<input type="hidden" name="generateValue" value="2" />
+			<button type="submit" class="btn btn-success btn-sm">Generate random UEL group</button>
+		</form>
+		<form action="#" th:action="@{/generateLeague}" method="POST">
+			<input type="hidden" name="generateValue" value="3" />
+			<button type="submit" class="btn btn-success btn-sm">Generate random UECL group</button>
+		</form>
+	</div>
+
+	<form th:action="@{/teamlist/filter}" method="get" class="mb-3">
+		<div class="row">
+			<div class="col-sm-12">
+				<h5>Select National League</h5>
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="nation" value="ENGLAND" id="nationEngland">
+					<label class="form-check-label" for="nationEngland">England</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="nation" value="TURKEY" id="nationTurkey">
+					<label class="form-check-label" for="nationTurkey">Turkey</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="nation" value="GERMANY" id="nationGermany">
+					<label class="form-check-label" for="nationGermany">Germany</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="nation" value="FRANCE" id="nationFrance">
+					<label class="form-check-label" for="nationFrance">France</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="nation" value="SPAIN" id="nationSpain">
+					<label class="form-check-label" for="nationSpain">Spain</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="nation" value="ITALY" id="nationItaly">
+					<label class="form-check-label" for="nationItaly">Italy</label>
+				</div>
+			</div>
+		</div>
+		<button type="submit" class="btn btn-primary mt-3">Filter</button>
+	</form>
+
+</div>
+
+	
+</body>
+</html>
+
+

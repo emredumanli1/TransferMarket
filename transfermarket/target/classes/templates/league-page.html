@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+				xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+	<title>Transfer Market</title>
+</head>
+
+<body>
+
+<div class="container">
+
+	<h3>Group Generator</h3>
+	<hr>
+
+    <br><br>
+
+    <div th:if="${resultMessage}" class="alert alert-info" role="alert" th:text="${resultMessage}"></div>
+
+    <br><br>
+
+	<form action="#" th:action="@{/}"
+      method="GET">
+
+    <input type="submit" value="Back" class="btn btn-outline-primary mt-2" />
+
+	</form>
+
+    <br><br>
+
+	<table class="table table-bordered table-striped">
+		<thead class="table-dark">
+			<tr>
+				<th>Team name</th>
+				<th>Nation</th>
+				<th>Market Value</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each="tempTeam : ${participants}">
+			
+				<td th:text="${tempTeam.teamName}" ></td>	
+				<td th:text="${tempTeam.nation}" ></td>	
+				<td th:text="${tempTeam.getMarketValue() != null ? tempTeam.getMarketValue() + 'M €' : 'N/A'}"></td>
+
+			</tr>
+		</tbody>		
+	</table>
+	
+
+</div>
+
+	
+</body>
+</html>
+
+
